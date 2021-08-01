@@ -4,6 +4,10 @@ import java.util.List;
 
 public interface IUserService {
     UserModel saveUser(UserModel user);
-    UserModel getUser(String username);
     List<UserModel> getUsers();
+    UserModel findByEmail (String email);
+    UserModel findByUsername (String username);
+    UserModel findById (Long id);
+    void delete(Long id);
+    UserModel register(UserModel user);
 }

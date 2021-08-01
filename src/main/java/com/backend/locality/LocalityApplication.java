@@ -13,8 +13,4 @@ public class LocalityApplication {
 		SpringApplication.run(LocalityApplication.class, args);
 	}
 
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 }
