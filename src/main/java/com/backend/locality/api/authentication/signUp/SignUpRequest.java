@@ -9,7 +9,9 @@ import java.util.Set;
 @Setter
 public class SignUpRequest {
     private String username;
+    private String firstName;
+    private String lastName;
+    private String password;
     private String email;
     private Set<String> roles;
-    private String password;
 }

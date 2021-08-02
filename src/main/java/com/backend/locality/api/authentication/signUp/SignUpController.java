@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static com.backend.locality.api.role.RolesEnum.CONTRACTOR;
+import static com.backend.locality.api.role.RolesEnum.SUPERVISOR;
+
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(value = "/api/v1/auth")
@@ -39,9 +42,14 @@ public class SignUpController {
                     .body(new MessageResponse("Error: Email is exist"));
         }
 
-        UserModel user = new UserModel(signupRequest.getUsername(),
+        UserModel user = new UserModel(
+                signupRequest.getUsername(),
+                signupRequest.getFirstName(),
+                signupRequest.getLastName(),
+                passwordEncoder.encode(signupRequest.getPassword()),
                 signupRequest.getEmail(),
-                passwordEncoder.encode(signupRequest.getPassword()));
+                null
+        );
 
         Set<String> reqRoles = signupRequest.getRoles();
         List<Role> roles = new ArrayList<>();
@@ -54,26 +62,24 @@ public class SignUpController {
         } else {
             reqRoles.forEach(r -> {
                 switch (r) {
-                    case "contractor":
+                    case "contractor" -> {
                         Role adminRole = roleRepository
                                 .findByName(RolesEnum.CONTRACTOR)
                                 .orElseThrow(() -> new RuntimeException("Error, Role CONTRACTOR is not found"));
                         roles.add(adminRole);
-
-                        break;
-                    case "supervisor":
+                    }
+                    case "supervisor" -> {
                         Role modRole = roleRepository
                                 .findByName(RolesEnum.SUPERVISOR)
                                 .orElseThrow(() -> new RuntimeException("Error, Role SUPERVISOR is not found"));
                         roles.add(modRole);
-
-                        break;
-
-                    default:
+                    }
+                    default -> {
                         Role userRole = roleRepository
                                 .findByName(RolesEnum.USER)
                                 .orElseThrow(() -> new RuntimeException("Error, Role USER is not found"));
                         roles.add(userRole);
+                    }
                 }
             });
         }

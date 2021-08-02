@@ -1,6 +1,6 @@
 package com.backend.locality.api.users;
 
-import com.backend.locality.api.common.BaseEntity;
+import com.backend.locality.api.BaseEntity;
 import com.backend.locality.api.role.Role;
 import lombok.*;
 
@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -33,12 +32,6 @@ public class UserModel extends BaseEntity {
 
     @Column
     private String email;
-
-    public UserModel(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

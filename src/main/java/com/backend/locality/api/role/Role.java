@@ -1,6 +1,6 @@
 package com.backend.locality.api.role;
 
-import com.backend.locality.api.common.BaseEntity;
+import com.backend.locality.api.BaseEntity;
 import com.backend.locality.api.users.UserModel;
 import lombok.*;
 
