@@ -1,6 +1,5 @@
-package com.backend.locality.api.authentication;
+package com.backend.locality.api.authentication.signIn;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class AuthenticationResponse {
+public class SignInResponse {
     private String token;
     private String type = "Bearer";
     private Long id;
@@ -16,7 +15,7 @@ public class AuthenticationResponse {
     private String email;
     private List<String> roles;
 
-    public AuthenticationResponse(String token, Long id, String username, String email, List<String> roles) {
+    public SignInResponse(String token, Long id, String username, String email, List<String> roles) {
         this.token = token;
         this.id = id;
         this.username = username;

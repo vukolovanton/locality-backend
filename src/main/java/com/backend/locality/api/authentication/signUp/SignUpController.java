@@ -1,63 +1,31 @@
-package com.backend.locality.api.authentication;
+package com.backend.locality.api.authentication.signUp;
 
+import com.backend.locality.api.authentication.MessageResponse;
 import com.backend.locality.api.role.Role;
 import com.backend.locality.api.role.RoleRepository;
 import com.backend.locality.api.role.RolesEnum;
-import com.backend.locality.api.users.UserDetailsImpl;
 import com.backend.locality.api.users.UserModel;
 import com.backend.locality.api.users.UserRepository;
-import com.backend.locality.security.jwt.JwtTokenProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(value = "/api/v1/auth")
 @AllArgsConstructor
-public class AuthenticationController {
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
+public class SignUpController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> authUser(@RequestBody AuthenticationRequest loginRequest) {
-
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtTokenProvider.generateJwtToken(authentication);
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(new AuthenticationResponse(
-                jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles));
-    }
-
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody AuthorizationRequest signupRequest) {
+    public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signupRequest) {
 
         if (userRepository.existsByUsername(signupRequest.getUsername())) {
             return ResponseEntity
