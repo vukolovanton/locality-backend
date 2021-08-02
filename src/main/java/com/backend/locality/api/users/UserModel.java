@@ -1,13 +1,11 @@
 package com.backend.locality.api.users;
 
+import com.backend.locality.api.common.BaseEntity;
+import com.backend.locality.api.role.Role;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,15 +13,20 @@ import java.util.Collections;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
-@Table(name = "users")
-public class UserModel implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
+@Table(name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
+public class UserModel extends BaseEntity {
     @Column
     private String username;
+
+    @Column
+    private String firstName;
+
+    @Column
+    private String lastName;
 
     @Column
     private String password;
@@ -31,55 +34,17 @@ public class UserModel implements UserDetails {
     @Column
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    private Boolean isLocked;
-    private Boolean isEnabled;
-
-    public UserModel(String username, String password, String email, Role role, Boolean isLocked, Boolean isEnabled) {
+    public UserModel(String username, String email, String password) {
         this.username = username;
-        this.password = password;
         this.email = email;
-        this.role = role;
-        this.isLocked = isLocked;
-        this.isEnabled = isEnabled;
+        this.password = password;
     }
 
-    // SECURITY
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.name());
-        return Collections.singletonList(authority);
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
+    )
+    private List<Role> roles;
 
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return !this.isLocked;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.isEnabled;
-    }
 }
