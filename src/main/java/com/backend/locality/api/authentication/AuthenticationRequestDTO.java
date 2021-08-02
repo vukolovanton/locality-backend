@@ -1,4 +1,4 @@
-package com.backend.locality.api.common;
+package com.backend.locality.api.authentication;
 
 import lombok.Data;
 

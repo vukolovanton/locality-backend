@@ -13,7 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "users")
+@Table(name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
 public class UserModel extends BaseEntity {
     @Column
     private String username;
@@ -29,6 +33,12 @@ public class UserModel extends BaseEntity {
 
     @Column
     private String email;
+
+    public UserModel(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
