@@ -1,30 +1,27 @@
 package com.backend.locality.api.locality;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/locality")
 @AllArgsConstructor
+@RequestMapping("/api/locality")
 public class LocalityController {
     private final LocalityService localityService;
 
-    @GetMapping
+    @RequestMapping(method = RequestMethod.GET)
     public List<LocalityModel> getAllLocalities() {
         return localityService.findAll();
     }
 
-    @PostMapping
+    @RequestMapping(method = RequestMethod.POST)
     public LocalityModel saveLocality(LocalityModel locality) {
         return localityService.saveLocality(locality);
     }
 
-    @GetMapping("/index")
+    @RequestMapping(value = "/id", method = RequestMethod.GET)
     public LocalityModel getLocalityById(int localityId) {
         return localityService.findLocalityById(localityId);
     }

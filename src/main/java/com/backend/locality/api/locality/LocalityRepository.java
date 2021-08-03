@@ -29,19 +29,21 @@ public class LocalityRepository implements ILocalityRepository {
     public LocalityModel findLocalityById(int localityId) {
         Session session = entityManager.unwrap(Session.class);
 
-        TypedQuery<LocalityModel> findAllQuery = session.createQuery(
+        TypedQuery<LocalityModel> findLocalityByIdQuery = session.createQuery(
                 "Select l from LocalityModel l where l.id = :localityId",
                 LocalityModel.class
         );
-        findAllQuery.setParameter("localityId", localityId);
+        findLocalityByIdQuery.setParameter("localityId", localityId);
 
-        return findAllQuery.getSingleResult();
+        return findLocalityByIdQuery.getSingleResult();
     }
 
     @Override
     public LocalityModel saveLocality(LocalityModel locality) {
         Session session = entityManager.unwrap(Session.class);
-        session.persist(locality);
+        session.save(locality);
+
+        // Or is it going to have id?
         return locality;
     }
 }
