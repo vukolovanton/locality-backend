@@ -1,8 +1,7 @@
 package com.backend.locality.api.announcements;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -12,15 +11,18 @@ import java.util.List;
 public class AnnouncementsController {
     private final AnnouncementsService announcementsService;
 
+    @RequestMapping(method = RequestMethod.GET)
     public List<AnnouncementsModel> getAllAnnouncements() {
         return announcementsService.findAll();
     }
 
-    public AnnouncementsModel saveAnnouncement(AnnouncementsModel announcement) {
+    @RequestMapping(method = RequestMethod.POST)
+    public AnnouncementsModel saveAnnouncement(@RequestBody AnnouncementsModel announcement) {
         return announcementsService.saveAnnouncement(announcement);
     }
 
-    public AnnouncementsModel getAnnouncementById(int announcementId) {
+    @RequestMapping(value = "/:id", method = RequestMethod.GET)
+    public AnnouncementsModel getAnnouncementById(@ModelAttribute Long announcementId) {
         return announcementsService.findAnnouncementById(announcementId);
     }
 }

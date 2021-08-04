@@ -1,9 +1,7 @@
 package com.backend.locality.api.issues;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -11,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/issues")
 public class IssuesController {
-    private final IssuesService issuesService;
+    private final Issues issuesService;
 
     @RequestMapping(method = RequestMethod.GET)
     public List<IssuesModel> getAllIssues() {
@@ -19,12 +17,12 @@ public class IssuesController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public IssuesModel saveIssue(IssuesModel issue) {
+    public IssuesModel saveIssue(@RequestBody IssuesModel issue) {
         return issuesService.saveIssue(issue);
     }
 
-    @RequestMapping(value = "/id", method = RequestMethod.GET)
-    public IssuesModel getIssueById(int issueId) {
+    @RequestMapping(value = "/{issueId}", method = RequestMethod.GET)
+    public IssuesModel getIssueById(@PathVariable Long issueId) {
         return issuesService.findIssueById(issueId);
     }
 }

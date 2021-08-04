@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface IDocuments {
     List<DocumentsModel> findAllDocuments();
-    DocumentsModel findDocumentById(int documentId);
+    DocumentsModel findDocumentById(Long documentId);
     DocumentsModel saveDocument(DocumentsModel document);
 }

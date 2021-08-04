@@ -26,7 +26,7 @@ public class LocalityRepository implements ILocalityRepository {
     }
 
     @Override
-    public LocalityModel findLocalityById(int localityId) {
+    public LocalityModel findLocalityById(Long localityId) {
         Session session = entityManager.unwrap(Session.class);
 
         TypedQuery<LocalityModel> findLocalityByIdQuery = session.createQuery(

@@ -17,7 +17,7 @@ public class AnnouncementsService implements IAnnouncements {
     }
 
     @Override
-    public AnnouncementsModel findAnnouncementById(int announcementId) {
+    public AnnouncementsModel findAnnouncementById(Long announcementId) {
         return announcementsRepository.findAnnouncementById(announcementId);
     }
 

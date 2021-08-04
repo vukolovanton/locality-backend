@@ -35,8 +35,8 @@ public class IssuesModel extends BaseEntity {
     private String imageUrl;
 
     @Column
-    private int userId;
+    private Long userId;
 
     @Column
-    private int localityId;
+    private Long localityId;
 }

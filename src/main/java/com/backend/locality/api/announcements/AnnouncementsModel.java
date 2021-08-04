@@ -32,8 +32,8 @@ public class AnnouncementsModel extends BaseEntity {
     private String status;
 
     @Column
-    private int userId;
+    private Long userId;
 
     @Column
-    private int localityId;
+    private Long localityId;
 }

@@ -4,8 +4,8 @@ import com.backend.locality.api.issues.IssuesModel;
 
 import java.util.List;
 
-public interface IIssuesRepository {
+public interface IIssues {
     List<IssuesModel> findAllIssues();
-    IssuesModel findIssueById(int issueId);
+    IssuesModel findIssueById(Long issueId);
     IssuesModel saveIssue(IssuesModel issue);
 }

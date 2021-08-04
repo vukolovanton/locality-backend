@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface IAnnouncements {
     List<AnnouncementsModel> findAll();
-    AnnouncementsModel findAnnouncementById(int announcementId);
+    AnnouncementsModel findAnnouncementById(Long announcementId);
     AnnouncementsModel saveAnnouncement(AnnouncementsModel announcement);
 }

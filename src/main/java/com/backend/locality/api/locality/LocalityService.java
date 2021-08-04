@@ -17,7 +17,7 @@ public class LocalityService implements ILocalityService {
     }
 
     @Override
-    public LocalityModel findLocalityById(int id) {
+    public LocalityModel findLocalityById(Long id) {
         return localityRepository.findLocalityById(id);
     }
 

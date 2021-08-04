@@ -17,7 +17,7 @@ public class DocumentsService implements IDocuments {
     }
 
     @Override
-    public DocumentsModel findDocumentById(int documentId) {
+    public DocumentsModel findDocumentById(Long documentId) {
         return documentsRepository.findDocumentById(documentId);
     }
 

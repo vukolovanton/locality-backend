@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ILocalityService {
     public List<LocalityModel> findAll();
-    public LocalityModel findLocalityById(int id);
+    public LocalityModel findLocalityById(Long id);
     public LocalityModel saveLocality(LocalityModel locality);
 }

@@ -27,7 +27,7 @@ public class AnnouncementsRepository implements IAnnouncements {
     }
 
     @Override
-    public AnnouncementsModel findAnnouncementById(int announcementId) {
+    public AnnouncementsModel findAnnouncementById(Long announcementId) {
         Session session = entityManager.unwrap(Session.class);
 
         TypedQuery<AnnouncementsModel> findLocalityByIdQuery = session.createQuery(

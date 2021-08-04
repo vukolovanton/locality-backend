@@ -27,7 +27,7 @@ public class DocumentsRepository implements IDocuments {
     }
 
     @Override
-    public DocumentsModel findDocumentById(int documentId) {
+    public DocumentsModel findDocumentById(Long documentId) {
         Session session = entityManager.unwrap(Session.class);
 
         TypedQuery<DocumentsModel> findDocumentByIdQuery = session.createQuery(

@@ -17,12 +17,12 @@ public class LocalityController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public LocalityModel saveLocality(LocalityModel locality) {
+    public LocalityModel saveLocality(@RequestBody LocalityModel locality) {
         return localityService.saveLocality(locality);
     }
 
     @RequestMapping(value = "/id", method = RequestMethod.GET)
-    public LocalityModel getLocalityById(int localityId) {
+    public LocalityModel getLocalityById(@ModelAttribute Long localityId) {
         return localityService.findLocalityById(localityId);
     }
 }

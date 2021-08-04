@@ -3,9 +3,7 @@ package com.backend.locality.api.documents;
 import com.backend.locality.api.locality.LocalityModel;
 import com.backend.locality.api.locality.LocalityService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,12 +19,12 @@ public class DocumentsController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public DocumentsModel saveLocality(DocumentsModel document) {
+    public DocumentsModel saveLocality(@RequestBody DocumentsModel document) {
         return documentsService.saveDocument(document);
     }
 
     @RequestMapping(value = "/id", method = RequestMethod.GET)
-    public DocumentsModel getLocalityById(int documentId) {
+    public DocumentsModel getLocalityById(@ModelAttribute Long documentId) {
         return documentsService.findDocumentById(documentId);
     }
 }

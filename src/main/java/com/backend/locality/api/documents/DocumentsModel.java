@@ -35,8 +35,8 @@ public class DocumentsModel extends BaseEntity {
     private String link;
 
     @Column
-    private int localityId;
+    private Long localityId;
 
     @Column
-    private int userId;
+    private Long userId;
 }

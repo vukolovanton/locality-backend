@@ -1,6 +1,6 @@
 package com.backend.locality.api.issues;
 
-import com.backend.locality.api.issues.interfaces.IIssuesRepository;
+import com.backend.locality.api.issues.interfaces.IIssues;
 import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 @AllArgsConstructor
-public class IssuesRepository implements IIssuesRepository {
+public class IssuesRepository implements IIssues {
     private final EntityManager entityManager;
 
     @Override
@@ -27,7 +27,7 @@ public class IssuesRepository implements IIssuesRepository {
 
     @Override
     @Transactional
-    public IssuesModel findIssueById(int issueId) {
+    public IssuesModel findIssueById(Long issueId) {
         Session session = entityManager.unwrap(Session.class);
         TypedQuery<IssuesModel> findIssueByIdQuery = session.createQuery(
                 "select i from IssuesModel i where i.id = :issueId", IssuesModel.class
