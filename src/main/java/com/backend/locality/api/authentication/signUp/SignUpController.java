@@ -33,13 +33,13 @@ public class SignUpController {
         if (userRepository.existsByUsername(signupRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is exist"));
+                    .body(new MessageResponse("Username" + signupRequest.getUsername() + "already exists"));
         }
 
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email is exist"));
+                    .body(new MessageResponse("Email" + signupRequest.getEmail() + "already exists"));
         }
 
         UserModel user = new UserModel(
@@ -85,6 +85,8 @@ public class SignUpController {
         }
         user.setRoles(roles);
         userRepository.save(user);
-        return ResponseEntity.ok(new MessageResponse("User CREATED"));
+        // For now I want response to have only SUCCESS message
+        // Thinking about email confirmation...
+        return ResponseEntity.ok(new MessageResponse("SUCCESS"));
     }
 }

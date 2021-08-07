@@ -3,6 +3,7 @@ package com.backend.locality.api.authentication.signIn;
 import com.backend.locality.api.users.UserDetailsImpl;
 import com.backend.locality.security.jwt.JwtTokenProvider;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,11 +38,17 @@ public class SignInController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new SignInResponse(
-                jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles));
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.AUTHORIZATION, jwt)
+                .body(
+                        new SignInResponse(
+                            jwt,
+                            userDetails.getId(),
+                            userDetails.getUsername(),
+                            userDetails.getEmail(),
+                            roles
+                        )
+                );
     }
 }
