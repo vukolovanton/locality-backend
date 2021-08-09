@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
+//@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(value = "/api/v1/auth")
 @AllArgsConstructor
 public class SignInController {
@@ -47,6 +47,8 @@ public class SignInController {
                             userDetails.getId(),
                             userDetails.getUsername(),
                             userDetails.getEmail(),
+                            userDetails.getFirstName(),
+                            userDetails.getLastName(),
                             roles
                         )
                 );

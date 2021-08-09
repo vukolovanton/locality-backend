@@ -8,7 +8,6 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/locality")
-//@CrossOrigin("http://localhost:3000")
 public class LocalityController {
     private final LocalityService localityService;
 
