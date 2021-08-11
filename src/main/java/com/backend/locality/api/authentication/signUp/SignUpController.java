@@ -1,6 +1,7 @@
 package com.backend.locality.api.authentication.signUp;
 
 import com.backend.locality.api.authentication.MessageResponse;
+import com.backend.locality.api.locality.LocalityModel;
 import com.backend.locality.api.role.Role;
 import com.backend.locality.api.role.RoleRepository;
 import com.backend.locality.api.role.RolesEnum;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -47,8 +49,7 @@ public class SignUpController {
                 signupRequest.getFirstName(),
                 signupRequest.getLastName(),
                 passwordEncoder.encode(signupRequest.getPassword()),
-                signupRequest.getEmail(),
-                null
+                signupRequest.getEmail()
         );
 
         Set<String> reqRoles = signupRequest.getRoles();

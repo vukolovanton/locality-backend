@@ -1,6 +1,7 @@
 package com.backend.locality.api.users;
 
 import com.backend.locality.api.BaseEntity;
+import com.backend.locality.api.locality.LocalityModel;
 import com.backend.locality.api.role.Role;
 import lombok.*;
 
@@ -18,6 +19,15 @@ import java.util.List;
                 @UniqueConstraint(columnNames = "email")
         })
 public class UserModel extends BaseEntity {
+
+    public UserModel(String username, String firstName, String lastName, String password, String email) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+    }
+
     @Column
     private String username;
 
