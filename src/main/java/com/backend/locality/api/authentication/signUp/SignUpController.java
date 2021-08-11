@@ -52,7 +52,7 @@ public class SignUpController {
                 signupRequest.getEmail()
         );
 
-        Set<String> reqRoles = signupRequest.getRoles();
+        Set<RolesEnum> reqRoles = signupRequest.getRoles();
         List<Role> roles = new ArrayList<>();
 
         if (reqRoles == null) {
@@ -63,13 +63,13 @@ public class SignUpController {
         } else {
             reqRoles.forEach(r -> {
                 switch (r) {
-                    case "contractor" -> {
+                    case CONTRACTOR -> {
                         Role adminRole = roleRepository
                                 .findByName(RolesEnum.CONTRACTOR)
                                 .orElseThrow(() -> new RuntimeException("Error, Role CONTRACTOR is not found"));
                         roles.add(adminRole);
                     }
-                    case "supervisor" -> {
+                    case SUPERVISOR -> {
                         Role modRole = roleRepository
                                 .findByName(RolesEnum.SUPERVISOR)
                                 .orElseThrow(() -> new RuntimeException("Error, Role SUPERVISOR is not found"));

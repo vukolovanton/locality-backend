@@ -1,5 +1,6 @@
 package com.backend.locality.api.authentication.signUp;
 
+import com.backend.locality.api.role.RolesEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +14,5 @@ public class SignUpRequest {
     private String lastName;
     private String password;
     private String email;
-    private Set<String> roles;
+    private Set<RolesEnum> roles;
 }
