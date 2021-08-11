@@ -50,4 +50,5 @@ public class UserModel extends BaseEntity {
     )
     private List<Role> roles;
 
+    private Long localityId;
 }

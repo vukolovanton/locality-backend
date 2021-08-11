@@ -17,7 +17,7 @@ public class LocalityController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public LocalityModel saveLocality(@RequestBody LocalityModel locality) {
+    public LocalityModel saveLocality(@RequestBody LocalityCreationDTO locality) {
         return localityService.saveLocality(locality);
     }
 

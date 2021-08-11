@@ -1,11 +1,12 @@
 package com.backend.locality.api.locality.interfaces;
 
+import com.backend.locality.api.locality.LocalityCreationDTO;
 import com.backend.locality.api.locality.LocalityModel;
 
 import java.util.List;
 
-public interface ILocalityService {
+public interface ILocality {
     public List<LocalityModel> findAll();
     public LocalityModel findLocalityById(Long id);
-    public LocalityModel saveLocality(LocalityModel locality);
+    public LocalityModel saveLocality(LocalityCreationDTO locality);
 }

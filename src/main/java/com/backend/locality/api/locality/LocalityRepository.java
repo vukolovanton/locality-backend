@@ -1,6 +1,6 @@
 package com.backend.locality.api.locality;
 
-import com.backend.locality.api.locality.interfaces.ILocalityRepository;
+import com.backend.locality.api.locality.interfaces.ILocality;
 import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 @AllArgsConstructor
-public class LocalityRepository implements ILocalityRepository {
+public class LocalityRepository implements ILocality {
     private final EntityManager entityManager;
 
     @Override
@@ -39,11 +39,14 @@ public class LocalityRepository implements ILocalityRepository {
     }
 
     @Override
-    public LocalityModel saveLocality(LocalityModel locality) {
+    public LocalityModel saveLocality(LocalityCreationDTO locality) {
         Session session = entityManager.unwrap(Session.class);
-        session.save(locality);
+        LocalityModel l = new LocalityModel(locality.getTitle(), locality.getDescription(), locality.getCity(), locality.getStreet());
+        Long localityId = (Long) session.save(l);
+
+        LocalityModel savedLocality = findLocalityById(localityId);
 
         // Or is it going to have id?
-        return locality;
+        return savedLocality;
     }
 }
