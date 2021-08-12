@@ -21,8 +21,8 @@ public class LocalityController {
         return localityService.saveLocality(locality);
     }
 
-    @RequestMapping(value = "/id", method = RequestMethod.GET)
-    public LocalityModel getLocalityById(@ModelAttribute Long localityId) {
+    @RequestMapping(value = "/{localityId}", method = RequestMethod.GET)
+    public LocalityModel getLocalityById(@PathVariable("localityId") Long localityId) {
         return localityService.findLocalityById(localityId);
     }
 }

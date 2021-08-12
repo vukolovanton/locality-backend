@@ -43,6 +43,9 @@ public class UserModel extends BaseEntity {
     @Column
     private String email;
 
+    @Column
+    private Long localityId;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
@@ -50,5 +53,4 @@ public class UserModel extends BaseEntity {
     )
     private List<Role> roles;
 
-    private Long localityId;
 }

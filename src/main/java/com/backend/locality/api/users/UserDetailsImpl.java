@@ -13,6 +13,7 @@ public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+    private Long localityId;
     private String username;
     private String firstName;
     private String lastName;
@@ -21,9 +22,10 @@ public class UserDetailsImpl implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username, String firstName, String lastName, String email, String password,
+    public UserDetailsImpl(Long id, Long localityId, String username, String firstName, String lastName, String email, String password,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
+        this.localityId = localityId;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -39,6 +41,7 @@ public class UserDetailsImpl implements UserDetails {
 
         return new UserDetailsImpl(
                 user.getId(),
+                user.getLocalityId(),
                 user.getUsername(),
                 user.getFirstName(),
                 user.getLastName(),
@@ -68,6 +71,10 @@ public class UserDetailsImpl implements UserDetails {
 
     public String getEmail() {
         return email;
+    }
+
+    public Long getLocalityId() {
+        return localityId;
     }
 
     public String getFirstName() { return firstName; }
