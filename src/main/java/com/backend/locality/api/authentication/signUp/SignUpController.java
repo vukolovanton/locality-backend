@@ -1,7 +1,5 @@
 package com.backend.locality.api.authentication.signUp;
 
-import com.backend.locality.api.authentication.MessageResponse;
-import com.backend.locality.api.locality.LocalityModel;
 import com.backend.locality.api.role.Role;
 import com.backend.locality.api.role.RoleRepository;
 import com.backend.locality.api.role.RolesEnum;
@@ -13,12 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import static com.backend.locality.api.role.RolesEnum.CONTRACTOR;
-import static com.backend.locality.api.role.RolesEnum.SUPERVISOR;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -35,13 +30,13 @@ public class SignUpController {
         if (userRepository.existsByUsername(signupRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Username" + signupRequest.getUsername() + "already exists"));
+                    .body(new SignUpResponse("Username" + signupRequest.getUsername() + "already exists", null));
         }
 
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Email" + signupRequest.getEmail() + "already exists"));
+                    .body(new SignUpResponse("Email" + signupRequest.getEmail() + "already exists", null));
         }
 
         UserModel user = new UserModel(
@@ -85,9 +80,10 @@ public class SignUpController {
             });
         }
         user.setRoles(roles);
-        userRepository.save(user);
-        // For now I want response to have only SUCCESS message
+        UserModel newUser = userRepository.save(user);
+
+        // For now I want response to have only SUCCESS message and ID (not the token)
         // Thinking about email confirmation...
-        return ResponseEntity.ok(new MessageResponse("SUCCESS"));
+        return ResponseEntity.ok(new SignUpResponse("SUCCESS", newUser.getId()));
     }
 }
