@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class Issues implements IIssues {
+public class IssuesService implements IIssues {
     private final IssuesRepository issuesRepository;
 
     @Override
@@ -22,7 +22,7 @@ public class Issues implements IIssues {
     }
 
     @Override
-    public IssuesModel saveIssue(IssuesModel issue) {
+    public IssuesModel saveIssue(IssuesCreateRequest issue) {
         return issuesRepository.saveIssue(issue);
     }
 }

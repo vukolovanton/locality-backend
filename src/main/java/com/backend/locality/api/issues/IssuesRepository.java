@@ -1,19 +1,24 @@
 package com.backend.locality.api.issues;
 
 import com.backend.locality.api.issues.interfaces.IIssues;
+import com.backend.locality.api.users.UserModel;
+import com.backend.locality.api.users.UserRepository;
 import lombok.AllArgsConstructor;
 import org.hibernate.Session;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
 public class IssuesRepository implements IIssues {
     private final EntityManager entityManager;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
@@ -41,12 +46,28 @@ public class IssuesRepository implements IIssues {
 
     @Override
     @Transactional
-    public IssuesModel saveIssue(IssuesModel issue) {
-        Session session = entityManager.unwrap(Session.class);
-        session.persist(issue);
-        session.flush();
+    public IssuesModel saveIssue(IssuesCreateRequest request) {
 
-        // Is it going to have id?
-        return issue;
+        Session session = entityManager.unwrap(Session.class);
+
+        Optional<UserModel> user = userRepository.findById(request.getUserId());
+        IssuesModel newIssue = new IssuesModel(
+                request.getTitle(),
+                request.getDescription(),
+                request.getStatus(),
+                request.getImageUrl(),
+                request.getLocalityId(),
+                null
+        );
+
+        if (user.isPresent()) {
+            newIssue.setUser(user.get());
+            session.persist(newIssue);
+            session.flush();
+        } else {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return newIssue;
     }
 }

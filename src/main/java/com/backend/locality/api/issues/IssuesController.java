@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/issues")
 public class IssuesController {
-    private final Issues issuesService;
+    private final IssuesService issuesService;
 
     @RequestMapping(method = RequestMethod.GET)
     public List<IssuesModel> getAllIssues() {
@@ -17,7 +17,7 @@ public class IssuesController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public IssuesModel saveIssue(@RequestBody IssuesModel issue) {
+    public IssuesModel saveIssue(@RequestBody IssuesCreateRequest issue) {
         return issuesService.saveIssue(issue);
     }
 
