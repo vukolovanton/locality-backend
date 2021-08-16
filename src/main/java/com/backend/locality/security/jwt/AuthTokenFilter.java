@@ -1,10 +1,6 @@
 package com.backend.locality.security.jwt;
 
-import com.backend.locality.api.users.UserDetailsImpl;
 import com.backend.locality.api.users.UserService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

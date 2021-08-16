@@ -22,7 +22,6 @@ import java.util.Set;
 public class SignUpController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signupRequest) {
@@ -47,39 +46,6 @@ public class SignUpController {
                 signupRequest.getEmail()
         );
 
-        Set<RolesEnum> reqRoles = signupRequest.getRoles();
-        List<Role> roles = new ArrayList<>();
-
-        if (reqRoles == null) {
-            Role userRole = roleRepository
-                    .findByName(RolesEnum.USER)
-                    .orElseThrow(() -> new RuntimeException("Error, Role USER is not found"));
-            roles.add(userRole);
-        } else {
-            reqRoles.forEach(r -> {
-                switch (r) {
-                    case CONTRACTOR -> {
-                        Role adminRole = roleRepository
-                                .findByName(RolesEnum.CONTRACTOR)
-                                .orElseThrow(() -> new RuntimeException("Error, Role CONTRACTOR is not found"));
-                        roles.add(adminRole);
-                    }
-                    case SUPERVISOR -> {
-                        Role modRole = roleRepository
-                                .findByName(RolesEnum.SUPERVISOR)
-                                .orElseThrow(() -> new RuntimeException("Error, Role SUPERVISOR is not found"));
-                        roles.add(modRole);
-                    }
-                    default -> {
-                        Role userRole = roleRepository
-                                .findByName(RolesEnum.USER)
-                                .orElseThrow(() -> new RuntimeException("Error, Role USER is not found"));
-                        roles.add(userRole);
-                    }
-                }
-            });
-        }
-        user.setRoles(roles);
         UserModel newUser = userRepository.save(user);
 
         // For now I want response to have only SUCCESS message and ID (not the token)
