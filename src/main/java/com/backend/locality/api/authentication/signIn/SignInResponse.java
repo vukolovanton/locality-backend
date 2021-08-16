@@ -3,8 +3,6 @@ package com.backend.locality.api.authentication.signIn;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 public class SignInResponse {

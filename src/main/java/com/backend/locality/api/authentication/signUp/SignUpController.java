@@ -1,18 +1,11 @@
 package com.backend.locality.api.authentication.signUp;
 
-import com.backend.locality.api.role.Role;
-import com.backend.locality.api.role.RoleRepository;
-import com.backend.locality.api.role.RolesEnum;
 import com.backend.locality.api.users.UserModel;
 import com.backend.locality.api.users.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 
 @RestController

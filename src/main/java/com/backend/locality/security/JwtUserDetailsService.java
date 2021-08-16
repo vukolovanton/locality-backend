@@ -1,23 +1,18 @@
 package com.backend.locality.security;
 
+import com.backend.locality.api.users.UserDetailsImpl;
 import com.backend.locality.api.users.UserModel;
 import com.backend.locality.api.users.UserService;
-import com.backend.locality.security.jwt.JwtUser;
-import com.backend.locality.security.jwt.JwtUserFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class JwtUserDetailsService implements UserDetailsService {
     private final UserService userService;
-
-    @Autowired
-    public JwtUserDetailsService(UserService userService) {
-        this.userService = userService;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -26,6 +21,7 @@ public class JwtUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
 
-        return JwtUserFactory.create(user);
+        return UserDetailsImpl.build(user);
+
     }
 }
