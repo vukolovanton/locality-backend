@@ -1,12 +1,10 @@
 package com.backend.locality.api.users;
 
 import com.backend.locality.api.BaseEntity;
-import com.backend.locality.api.locality.LocalityModel;
 import com.backend.locality.api.role.Role;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -21,12 +19,13 @@ import java.util.List;
         })
 public class UserModel extends BaseEntity {
 
-    public UserModel(String username, String firstName, String lastName, String password, String email) {
+    public UserModel(String username, String firstName, String lastName, String password, String email, Role role) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.email = email;
+        this.role = role;
     }
 
     @Column
@@ -47,10 +46,7 @@ public class UserModel extends BaseEntity {
     @Column
     private Long localityId;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
-    )
-    private List<Role> roles;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
 }

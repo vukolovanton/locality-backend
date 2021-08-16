@@ -1,5 +1,6 @@
 package com.backend.locality.api.authentication.signUp;
 
+import com.backend.locality.api.role.Role;
 import com.backend.locality.api.users.UserModel;
 import com.backend.locality.api.users.UserRepository;
 import lombok.AllArgsConstructor;
@@ -36,7 +37,8 @@ public class SignUpController {
                 signupRequest.getFirstName(),
                 signupRequest.getLastName(),
                 passwordEncoder.encode(signupRequest.getPassword()),
-                signupRequest.getEmail()
+                signupRequest.getEmail(),
+                signupRequest.getRoles()
         );
 
         UserModel newUser = userRepository.save(user);
