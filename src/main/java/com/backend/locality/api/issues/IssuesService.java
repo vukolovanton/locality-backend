@@ -25,4 +25,9 @@ public class IssuesService implements IIssues {
     public IssuesModel saveIssue(IssuesCreateRequest issue) {
         return issuesRepository.saveIssue(issue);
     }
+
+    @Override
+    public IssuesModel patchIssue(PatchIssueRequest request) {
+        return issuesRepository.patchIssue(request);
+    }
 }

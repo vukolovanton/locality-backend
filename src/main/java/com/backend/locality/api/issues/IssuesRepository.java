@@ -28,7 +28,7 @@ public class IssuesRepository implements IIssues {
 
         TypedQuery<IndexIssueResponse> findAllIssues = session.createQuery(
                 "select new com.backend.locality.api.issues.IndexIssueResponse" +
-                        "(i.id, i.title, i.description, i.status, i.imageUrl, i.user.username)" +
+                        "(i.id, i.title, i.description, i.status, i.createdAt, i.imageUrl, i.user.username)" +
                         "from IssuesModel i where i.localityId = :localityId", IndexIssueResponse.class
         );
 
@@ -76,5 +76,17 @@ public class IssuesRepository implements IIssues {
         }
 
         return newIssue;
+    }
+
+    @Override
+    @Transactional
+    public IssuesModel patchIssue(PatchIssueRequest request) {
+        Session session = entityManager.unwrap(Session.class);
+
+        IssuesModel issue = findIssueById(request.getIssueId());
+        issue.setImageUrl(request.getImageUrl());
+        session.persist(issue);
+
+        return issue;
     }
 }

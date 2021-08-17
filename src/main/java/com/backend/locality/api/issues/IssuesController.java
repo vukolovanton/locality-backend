@@ -16,6 +16,11 @@ public class IssuesController {
         return issuesService.findAllIssues(request);
     }
 
+    @RequestMapping(method = RequestMethod.PATCH)
+    public IssuesModel patch(@RequestBody PatchIssueRequest request) {
+        return issuesService.patchIssue(request);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     public IssuesModel saveIssue(@RequestBody IssuesCreateRequest issue) {
         return issuesService.saveIssue(issue);

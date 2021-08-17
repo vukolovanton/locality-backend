@@ -1,18 +1,22 @@
 package com.backend.locality.api.issues;
 
+import java.time.LocalDate;
+
 public class IndexIssueResponse {
     private Long id;
     private String title;
     private String description;
     private IssueStatuses status;
+    private LocalDate createdAt;
     private String imageUrl;
     private String username;
 
-    public IndexIssueResponse(Long id, String title, String description, IssueStatuses status, String imageUrl, String username) {
+    public IndexIssueResponse(Long id, String title, String description, IssueStatuses status, LocalDate createdAt, String imageUrl, String username) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
+        this.createdAt = createdAt;
         this.imageUrl = imageUrl;
         this.username = username;
     }
@@ -47,6 +51,14 @@ public class IndexIssueResponse {
 
     public void setStatus(IssueStatuses status) {
         this.status = status;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getImageUrl() {
