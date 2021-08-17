@@ -12,8 +12,8 @@ public class IssuesService implements IIssues {
     private final IssuesRepository issuesRepository;
 
     @Override
-    public List<IssuesModel> findAllIssues() {
-        return issuesRepository.findAllIssues();
+    public List<IndexIssueResponse> findAllIssues(IndexIssuesRequest request) {
+        return issuesRepository.findAllIssues(request);
     }
 
     @Override

@@ -12,8 +12,8 @@ public class IssuesController {
     private final IssuesService issuesService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<IssuesModel> getAllIssues() {
-        return issuesService.findAllIssues();
+    public List<IndexIssueResponse> index(@ModelAttribute IndexIssuesRequest request) {
+        return issuesService.findAllIssues(request);
     }
 
     @RequestMapping(method = RequestMethod.POST)

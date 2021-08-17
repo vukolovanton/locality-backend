@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -22,11 +23,17 @@ public class IssuesRepository implements IIssues {
 
     @Override
     @Transactional
-    public List<IssuesModel> findAllIssues() {
+    public List<IndexIssueResponse> findAllIssues(IndexIssuesRequest request) {
         Session session = entityManager.unwrap(Session.class);
-        TypedQuery<IssuesModel> findAllIssues = session.createQuery(
-                "select i from IssuesModel i", IssuesModel.class
+
+        TypedQuery<IndexIssueResponse> findAllIssues = session.createQuery(
+                "select new com.backend.locality.api.issues.IndexIssueResponse" +
+                        "(i.id, i.title, i.description, i.status, i.imageUrl, i.user.username)" +
+                        "from IssuesModel i where i.localityId = :localityId", IndexIssueResponse.class
         );
+
+        findAllIssues.setParameter("localityId", request.getLocalityId());
+
         return findAllIssues.getResultList();
     }
 

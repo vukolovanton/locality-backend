@@ -2,7 +2,6 @@ package com.backend.locality.api.issues;
 
 import com.backend.locality.api.BaseEntity;
 import com.backend.locality.api.users.UserModel;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
