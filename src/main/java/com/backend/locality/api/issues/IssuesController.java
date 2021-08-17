@@ -18,6 +18,7 @@ public class IssuesController {
 
     @RequestMapping(method = RequestMethod.PATCH)
     public IssuesModel patch(@RequestBody PatchIssueRequest request) {
+        // TODO: Make sure only owner of issue can update it
         return issuesService.patchIssue(request);
     }
 

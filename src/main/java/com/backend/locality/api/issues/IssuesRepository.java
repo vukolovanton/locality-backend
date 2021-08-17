@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,13 +27,34 @@ public class IssuesRepository implements IIssues {
     public List<IndexIssueResponse> findAllIssues(IndexIssuesRequest request) {
         Session session = entityManager.unwrap(Session.class);
 
-        TypedQuery<IndexIssueResponse> findAllIssues = session.createQuery(
-                "select new com.backend.locality.api.issues.IndexIssueResponse" +
-                        "(i.id, i.title, i.description, i.status, i.createdAt, i.imageUrl, i.user.username)" +
-                        "from IssuesModel i where i.localityId = :localityId", IndexIssueResponse.class
-        );
+        // Separate query parts into string so we can conditionally combine them
+        String select = "select new com.backend.locality.api.issues.IndexIssueResponse";
+        String items = "(i.id, i.title, i.description, i.status, i.createdAt, i.imageUrl, i.user.username)";
+        String from = "from IssuesModel i";
+        String where = "where i.localityId = :localityId";
 
+        StringBuilder sb = new StringBuilder();
+        List<String> conditions = Arrays.asList(select, items, from, where);
+
+        for (String s : conditions) {
+            sb.append(s);
+            sb.append(" ");
+        }
+
+        // If request contains orderBy value, apply it to query
+        if (request.getOrderBy() != null) {
+            String s = "order by i." + request.getOrderBy() + " DESC";
+            sb.append(s);
+        }
+
+        // Create query
+        TypedQuery<IndexIssueResponse> findAllIssues = session.createQuery(sb.toString(), IndexIssueResponse.class);
         findAllIssues.setParameter("localityId", request.getLocalityId());
+
+        // If request has limit, use it
+        if (request.getLimit() != null) {
+            findAllIssues.setMaxResults(request.getLimit());
+        }
 
         return findAllIssues.getResultList();
     }
