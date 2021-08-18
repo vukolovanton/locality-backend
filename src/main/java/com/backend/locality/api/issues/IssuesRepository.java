@@ -27,46 +27,45 @@ public class IssuesRepository implements IIssues {
     @Transactional
     public List<IndexIssueResponse> findAllIssues(IndexIssuesRequest request) {
         Session session = entityManager.unwrap(Session.class);
-
+        // TODO: Simplify this
         // Separate query parts into string so we can conditionally combine them
         String select = "select new com.backend.locality.api.issues.IndexIssueResponse";
         String items = "(i.id, i.title, i.description, i.status, i.createdAt, i.imageUrl, i.user.username)";
         String from = "from IssuesModel i";
         String where = "where i.localityId = :localityId";
-
+        // Combine strings
         StringBuilder sb = new StringBuilder();
         List<String> conditions = Arrays.asList(select, items, from, where);
-
         for (String s : conditions) {
             sb.append(s);
             sb.append(" ");
         }
-
         // If request contains orderBy value, apply it to query
         if (request.getOrderBy() != null) {
             String condition = "order by i." + request.getOrderBy() + " DESC";
             sb.append(condition);
         }
-
+        // Add status
         if (request.getStatus() != null) {
             String condition = "and i.status = :status";
             sb.append(condition);
         }
-
-
         // Create query
         TypedQuery<IndexIssueResponse> findAllIssues = session.createQuery(sb.toString(), IndexIssueResponse.class);
         findAllIssues.setParameter("localityId", request.getLocalityId());
-
+        // Filer by status
         if (request.getStatus() != null) {
             findAllIssues.setParameter("status", request.getStatus());
         }
-
         // If request has limit, use it
         if (request.getLimit() != null) {
             findAllIssues.setMaxResults(request.getLimit());
-        }
+            if (request.getPage() != null) {
+                findAllIssues.setFirstResult(calculateOffset(request.getPage(), request.getLimit()));
+                findAllIssues.setMaxResults(request.getLimit());
+            }
 
+        }
         return findAllIssues.getResultList();
     }
 
@@ -151,6 +150,10 @@ public class IssuesRepository implements IIssues {
             }
         }
         return false;
+    }
+
+    private static int calculateOffset(int page, int limit) {
+        return ((limit * page) - limit);
     }
 
 }

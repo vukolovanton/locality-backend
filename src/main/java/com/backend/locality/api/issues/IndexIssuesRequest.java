@@ -5,6 +5,7 @@ public class IndexIssuesRequest {
     private Long localityId;
     private String orderBy;
     private Integer limit;
+    private Integer page;
     private IssueStatuses status;
 
     public IssueStatuses getStatus() {
@@ -13,6 +14,14 @@ public class IndexIssuesRequest {
 
     public void setStatus(IssueStatuses status) {
         this.status = status;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
     }
 
     public Integer getLimit() {
