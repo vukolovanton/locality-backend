@@ -5,6 +5,15 @@ public class IndexIssuesRequest {
     private Long localityId;
     private String orderBy;
     private Integer limit;
+    private IssueStatuses status;
+
+    public IssueStatuses getStatus() {
+        return status;
+    }
+
+    public void setStatus(IssueStatuses status) {
+        this.status = status;
+    }
 
     public Integer getLimit() {
         return limit;

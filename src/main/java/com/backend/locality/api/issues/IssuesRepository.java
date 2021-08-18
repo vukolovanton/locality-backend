@@ -43,13 +43,23 @@ public class IssuesRepository implements IIssues {
 
         // If request contains orderBy value, apply it to query
         if (request.getOrderBy() != null) {
-            String s = "order by i." + request.getOrderBy() + " DESC";
-            sb.append(s);
+            String condition = "order by i." + request.getOrderBy() + " DESC";
+            sb.append(condition);
         }
+
+        if (request.getStatus() != null) {
+            String condition = "and i.status = :status";
+            sb.append(condition);
+        }
+
 
         // Create query
         TypedQuery<IndexIssueResponse> findAllIssues = session.createQuery(sb.toString(), IndexIssueResponse.class);
         findAllIssues.setParameter("localityId", request.getLocalityId());
+
+        if (request.getStatus() != null) {
+            findAllIssues.setParameter("status", request.getStatus());
+        }
 
         // If request has limit, use it
         if (request.getLimit() != null) {
