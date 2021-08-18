@@ -2,7 +2,16 @@ package com.backend.locality.api.issues;
 
 public class PatchIssueRequest {
     private Long issueId;
-    private String imageUrl;
+    private String key;
+    private String value;
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 
     public Long getIssueId() {
         return issueId;
@@ -12,11 +21,11 @@ public class PatchIssueRequest {
         this.issueId = issueId;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getKey() {
+        return key;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setKey(String key) {
+        this.key = key;
     }
 }

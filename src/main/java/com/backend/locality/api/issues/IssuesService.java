@@ -2,6 +2,7 @@ package com.backend.locality.api.issues;
 
 import com.backend.locality.api.issues.interfaces.IIssues;
 import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

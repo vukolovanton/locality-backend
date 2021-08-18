@@ -1,7 +1,9 @@
 package com.backend.locality.api.issues.interfaces;
 
 import com.backend.locality.api.issues.*;
+import org.springframework.data.jpa.repository.Modifying;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface IIssues {

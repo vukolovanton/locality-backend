@@ -5,13 +5,14 @@ import com.backend.locality.api.users.UserModel;
 import com.backend.locality.api.users.UserRepository;
 import lombok.AllArgsConstructor;
 import org.hibernate.Session;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -112,13 +113,44 @@ public class IssuesRepository implements IIssues {
 
     @Override
     @Transactional
+    @Modifying
     public IssuesModel patchIssue(PatchIssueRequest request) {
         Session session = entityManager.unwrap(Session.class);
 
-        IssuesModel issue = findIssueById(request.getIssueId());
-        issue.setImageUrl(request.getImageUrl());
-        session.persist(issue);
+        // Separate query
+        String update = "UPDATE IssuesModel ";
+        String set = "set " + request.getKey() + " = :value";
+        String where = " where id = :issueId";
+        //Combine query
+        Query updateQuery = session.createQuery(
+                update + set + where
+        );
+        // `status` column should contain only ENUM values
+        if (request.getKey().equals("status")) {
+            // Check if valid ENUM
+            boolean isEnum = checkIsEnum(request);
+            if (isEnum) {
+                updateQuery.setParameter("value", IssueStatuses.valueOf(request.getValue()));
+            }
+        // Nope, it's not an ENUM, it's a string
+        } else {
+            updateQuery.setParameter("value", request.getValue());
+        }
+        // Set last required param
+        updateQuery.setParameter("issueId", request.getIssueId());
+        updateQuery.executeUpdate();
 
-        return issue;
+        // TODO: return real Issue model
+        return new IssuesModel();
     }
+
+    private static boolean checkIsEnum(PatchIssueRequest request) {
+        for (IssueStatuses statuses : IssueStatuses.values()) {
+            if (statuses.name().equals(request.getValue())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
