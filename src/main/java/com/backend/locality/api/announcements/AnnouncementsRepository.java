@@ -1,19 +1,18 @@
 package com.backend.locality.api.announcements;
 
-import com.backend.locality.api.announcements.interfaces.IAnnouncements;
-import com.backend.locality.api.announcements.interfaces.IndexAnnouncementsRequest;
-import com.backend.locality.api.announcements.interfaces.IndexAnnouncementsResponse;
-import com.backend.locality.api.announcements.interfaces.PostAnnouncementRequest;
-import com.backend.locality.api.locality.LocalityModel;
+import com.backend.locality.api.AbstractPatchRequest;
+import com.backend.locality.api.announcements.interfaces.*;
 import com.backend.locality.api.users.UserModel;
 import com.backend.locality.api.users.UserRepository;
 import lombok.AllArgsConstructor;
 import org.hibernate.Session;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.Arrays;
 import java.util.List;
@@ -109,7 +108,44 @@ public class AnnouncementsRepository implements IAnnouncements {
         return announcement;
     }
 
-    private static int calculateOffset(int page, int limit) {
+    @Override
+    // TODO: Refactor this
+    @Transactional
+    @Modifying
+    public AnnouncementsModel patchAnnouncement(AbstractPatchRequest request) {
+        Session session = entityManager.unwrap(Session.class);
+
+        // Separate query
+        String update = "UPDATE AnnouncementsModel ";
+        String set = "set " + request.getKey() + " = :value";
+        String where = " where id = :entityId";
+
+        //Combine query
+        Query updateQuery = session.createQuery(
+                update + set + where
+        );
+
+        // handle ENUM
+        if (request.getKey().equals("status")) {
+            updateQuery.setParameter("value", AnnouncementsStatus.valueOf(request.getValue()));
+        // handle BOOLEAN
+        } else if (request.getKey().equals("isPinned")) {
+            updateQuery.setParameter("value", Boolean.valueOf(request.getValue()));
+        // handle STRING
+        } else {
+            updateQuery.setParameter("value", request.getValue());
+        }
+
+        // Set last required param
+        updateQuery.setParameter("entityId", request.getEntityId());
+        updateQuery.executeUpdate();
+
+        // TODO: return real Issue model
+        return new AnnouncementsModel();
+    }
+
+    private int calculateOffset(int page, int limit) {
         return ((limit * page) - limit);
     }
+
 }

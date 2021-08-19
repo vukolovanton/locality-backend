@@ -1,5 +1,6 @@
 package com.backend.locality.api.announcements;
 
+import com.backend.locality.api.AbstractPatchRequest;
 import com.backend.locality.api.announcements.interfaces.IndexAnnouncementsRequest;
 import com.backend.locality.api.announcements.interfaces.IndexAnnouncementsResponse;
 import com.backend.locality.api.announcements.interfaces.PostAnnouncementRequest;
@@ -19,13 +20,19 @@ public class AnnouncementsController {
         return announcementsService.findAll(request);
     }
 
+    @RequestMapping(value = "/{announcementId}", method = RequestMethod.GET)
+    public AnnouncementsModel getAnnouncementById(@PathVariable Long announcementId) {
+        return announcementsService.findAnnouncementById(announcementId);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     public AnnouncementsModel saveAnnouncement(@RequestBody PostAnnouncementRequest request) {
         return announcementsService.saveAnnouncement(request);
     }
 
-    @RequestMapping(value = "/{announcementId}", method = RequestMethod.GET)
-    public AnnouncementsModel getAnnouncementById(@PathVariable Long announcementId) {
-        return announcementsService.findAnnouncementById(announcementId);
+    @RequestMapping(method = RequestMethod.PATCH)
+    public AnnouncementsModel patchAnnouncement(@RequestBody AbstractPatchRequest request) {
+        return announcementsService.patchAnnouncement(request);
     }
+
 }

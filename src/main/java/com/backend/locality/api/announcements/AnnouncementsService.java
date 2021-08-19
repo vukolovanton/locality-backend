@@ -1,5 +1,6 @@
 package com.backend.locality.api.announcements;
 
+import com.backend.locality.api.AbstractPatchRequest;
 import com.backend.locality.api.announcements.interfaces.IAnnouncements;
 import com.backend.locality.api.announcements.interfaces.IndexAnnouncementsRequest;
 import com.backend.locality.api.announcements.interfaces.IndexAnnouncementsResponse;
@@ -27,5 +28,10 @@ public class AnnouncementsService implements IAnnouncements {
     @Override
     public AnnouncementsModel saveAnnouncement(PostAnnouncementRequest request) {
         return announcementsRepository.saveAnnouncement(request);
+    }
+
+    @Override
+    public AnnouncementsModel patchAnnouncement(AbstractPatchRequest request) {
+        return announcementsRepository.patchAnnouncement(request);
     }
 }
