@@ -1,6 +1,9 @@
 package com.backend.locality.api.announcements;
 
 import com.backend.locality.api.announcements.interfaces.IAnnouncements;
+import com.backend.locality.api.announcements.interfaces.IndexAnnouncementsRequest;
+import com.backend.locality.api.announcements.interfaces.IndexAnnouncementsResponse;
+import com.backend.locality.api.announcements.interfaces.PostAnnouncementRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +15,8 @@ public class AnnouncementsService implements IAnnouncements {
     private final AnnouncementsRepository announcementsRepository;
 
     @Override
-    public List<AnnouncementsModel> findAll() {
-        return announcementsRepository.findAll();
+    public List<IndexAnnouncementsResponse> findAll(IndexAnnouncementsRequest request) {
+        return announcementsRepository.findAll(request);
     }
 
     @Override
@@ -22,7 +25,7 @@ public class AnnouncementsService implements IAnnouncements {
     }
 
     @Override
-    public AnnouncementsModel saveAnnouncement(AnnouncementsModel announcement) {
-        return announcementsRepository.saveAnnouncement(announcement);
+    public AnnouncementsModel saveAnnouncement(PostAnnouncementRequest request) {
+        return announcementsRepository.saveAnnouncement(request);
     }
 }

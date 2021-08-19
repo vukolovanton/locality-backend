@@ -23,7 +23,7 @@ public class IssuesController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public IssuesModel saveIssue(@RequestBody IssuesCreateRequest issue) {
+    public IssuesModel saveIssue(@RequestBody PostIssuesRequest issue) {
         return issuesService.saveIssue(issue);
     }
 

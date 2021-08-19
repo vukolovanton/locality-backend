@@ -1,15 +1,14 @@
 package com.backend.locality.api.announcements;
 
 import com.backend.locality.api.BaseEntity;
+import com.backend.locality.api.announcements.interfaces.AnnouncementsStatus;
+import com.backend.locality.api.users.UserModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -26,14 +25,19 @@ public class AnnouncementsModel extends BaseEntity {
     private String description;
 
     @Column
-    private String type;
+    private String imageUrl;
 
     @Column
-    private String status;
+    private boolean isPinned;
 
     @Column
-    private Long userId;
+    @Enumerated(value = EnumType.STRING)
+    private AnnouncementsStatus status;
 
     @Column
     private Long localityId;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private UserModel user;
 }

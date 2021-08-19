@@ -85,7 +85,7 @@ public class IssuesRepository implements IIssues {
 
     @Override
     @Transactional
-    public IssuesModel saveIssue(IssuesCreateRequest request) {
+    public IssuesModel saveIssue(PostIssuesRequest request) {
 
         Session session = entityManager.unwrap(Session.class);
 

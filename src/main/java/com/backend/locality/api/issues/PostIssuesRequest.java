@@ -1,6 +1,6 @@
 package com.backend.locality.api.issues;
 
-public class IssuesCreateRequest {
+public class PostIssuesRequest {
     private String title;
     private String description;
     private String imageUrl;
@@ -8,7 +8,7 @@ public class IssuesCreateRequest {
     private Long localityId;
     private Long userId;
 
-    public IssuesCreateRequest(String title, String description, String imageUrl, IssueStatuses status, Long localityId, Long userId) {
+    public PostIssuesRequest(String title, String description, String imageUrl, IssueStatuses status, Long localityId, Long userId) {
         this.title = title;
         this.description = description;
         this.imageUrl = imageUrl;
