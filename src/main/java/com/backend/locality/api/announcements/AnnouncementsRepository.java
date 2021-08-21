@@ -16,6 +16,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -41,20 +42,38 @@ public class AnnouncementsRepository implements IAnnouncements {
             sb.append(s);
             sb.append(" ");
         }
+
         // Add status
         if (request.getStatus() != null) {
             String condition = "and a.status = :status";
             sb.append(condition);
         }
+
+
+        if (Objects.nonNull(request.getIsPinned())) {
+            String condition = "and a.isPinned = :isPinned";
+            sb.append(condition);
+        }
+
+        sb.append(" order by a.createdAt DESC");
+
         // Create query
         TypedQuery<IndexAnnouncementsResponse> findAllQuery = session.createQuery(
                 sb.toString(), IndexAnnouncementsResponse.class
         );
+
         findAllQuery.setParameter("localityId", request.getLocalityId());
+
         // Filer by status
         if (request.getStatus() != null) {
             findAllQuery.setParameter("status", request.getStatus());
         }
+
+        // Filer by pinned
+        if (Objects.nonNull(request.getIsPinned())) {
+            findAllQuery.setParameter("isPinned", request.getIsPinned().get());
+        }
+
         // If request has limit, use it
         if (request.getLimit() != null) {
             findAllQuery.setMaxResults(request.getLimit());
