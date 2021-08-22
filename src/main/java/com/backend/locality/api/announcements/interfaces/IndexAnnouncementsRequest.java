@@ -13,4 +13,6 @@ public class IndexAnnouncementsRequest {
     private Integer page;
     private AnnouncementsStatus status;
     private Optional<Boolean> isPinned;
+    private Long announcementId;
+    private String searchText;
 }

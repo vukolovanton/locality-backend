@@ -7,6 +7,15 @@ public class IndexIssuesRequest {
     private Integer limit;
     private Integer page;
     private IssueStatuses status;
+    private Long issueId;
+
+    public Long getIssueId() {
+        return issueId;
+    }
+
+    public void setIssueId(Long issueId) {
+        this.issueId = issueId;
+    }
 
     public IssueStatuses getStatus() {
         return status;

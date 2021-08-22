@@ -43,15 +43,28 @@ public class AnnouncementsRepository implements IAnnouncements {
             sb.append(" ");
         }
 
+        // Add id
+        if (request.getAnnouncementId() != null) {
+            String condition = "and a.id = :announcementId";
+            sb.append(condition);
+        }
+
         // Add status
         if (request.getStatus() != null) {
             String condition = "and a.status = :status";
             sb.append(condition);
         }
 
-
+        // Add isPinned
         if (Objects.nonNull(request.getIsPinned())) {
             String condition = "and a.isPinned = :isPinned";
+            sb.append(condition);
+        }
+
+
+        // Add searchText
+        if (request.getSearchText() != null) {
+            String condition = "and a.title like :searchText";
             sb.append(condition);
         }
 
@@ -64,6 +77,11 @@ public class AnnouncementsRepository implements IAnnouncements {
 
         findAllQuery.setParameter("localityId", request.getLocalityId());
 
+        // Filter by id
+        if (request.getAnnouncementId() != null) {
+            findAllQuery.setParameter("announcementId", request.getAnnouncementId());
+        }
+
         // Filer by status
         if (request.getStatus() != null) {
             findAllQuery.setParameter("status", request.getStatus());
@@ -72,6 +90,11 @@ public class AnnouncementsRepository implements IAnnouncements {
         // Filer by pinned
         if (Objects.nonNull(request.getIsPinned())) {
             findAllQuery.setParameter("isPinned", request.getIsPinned().get());
+        }
+
+        // Filter by searchText
+        if (request.getSearchText() != null) {
+            findAllQuery.setParameter("searchText", "%" + request.getSearchText() + "%");
         }
 
         // If request has limit, use it
