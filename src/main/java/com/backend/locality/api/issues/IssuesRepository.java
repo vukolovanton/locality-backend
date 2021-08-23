@@ -33,6 +33,7 @@ public class IssuesRepository implements IIssues {
         String items = "(i.id, i.title, i.description, i.status, i.createdAt, i.imageUrl, i.user.username)";
         String from = "from IssuesModel i";
         String where = "where i.localityId = :localityId";
+
         // Combine strings
         StringBuilder sb = new StringBuilder();
         List<String> conditions = Arrays.asList(select, items, from, where);
@@ -40,23 +41,28 @@ public class IssuesRepository implements IIssues {
             sb.append(s);
             sb.append(" ");
         }
+
         // If request contains orderBy value, apply it to query
         if (request.getOrderBy() != null) {
             String condition = "order by i." + request.getOrderBy() + " DESC";
             sb.append(condition);
         }
+
         // Add status
         if (request.getStatus() != null) {
             String condition = "and i.status = :status";
             sb.append(condition);
         }
+
         // Create query
         TypedQuery<IndexIssueResponse> findAllIssues = session.createQuery(sb.toString(), IndexIssueResponse.class);
         findAllIssues.setParameter("localityId", request.getLocalityId());
+
         // Filer by status
         if (request.getStatus() != null) {
             findAllIssues.setParameter("status", request.getStatus());
         }
+
         // If request has limit, use it
         if (request.getLimit() != null) {
             findAllIssues.setMaxResults(request.getLimit());
