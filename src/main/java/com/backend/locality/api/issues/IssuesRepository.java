@@ -12,10 +12,15 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Arrays;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 @AllArgsConstructor
@@ -23,56 +28,55 @@ public class IssuesRepository implements IIssues {
     private final EntityManager entityManager;
     private final UserRepository userRepository;
 
-    @Override
     @Transactional
     public List<IndexIssueResponse> findAllIssues(IndexIssuesRequest request) {
         Session session = entityManager.unwrap(Session.class);
-        // TODO: Simplify this
-        // Separate query parts into string so we can conditionally combine them
-        String select = "select new com.backend.locality.api.issues.IndexIssueResponse";
-        String items = "(i.id, i.title, i.description, i.status, i.createdAt, i.imageUrl, i.user.username)";
-        String from = "from IssuesModel i";
-        String where = "where i.localityId = :localityId";
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<IssuesModel> criteriaQuery = criteriaBuilder.createQuery(IssuesModel.class);
+        Root<IssuesModel> issuesRoot = criteriaQuery.from(IssuesModel.class);
 
-        // Combine strings
-        StringBuilder sb = new StringBuilder();
-        List<String> conditions = Arrays.asList(select, items, from, where);
-        for (String s : conditions) {
-            sb.append(s);
-            sb.append(" ");
+        criteriaQuery.select(issuesRoot);
+        criteriaQuery.where(criteriaBuilder.equal(issuesRoot.get("localityId"), request.getLocalityId()));
+
+        if (request.getStatus() != null) {
+            criteriaQuery.where(criteriaBuilder.equal(issuesRoot.get("status"), request.getStatus()));
         }
-
-        // If request contains orderBy value, apply it to query
         if (request.getOrderBy() != null) {
-            String condition = "order by i." + request.getOrderBy() + " DESC";
-            sb.append(condition);
+            criteriaQuery
+                    .orderBy(
+                            criteriaBuilder.desc(
+                                    issuesRoot.get(
+                                            request.getOrderBy()
+                                    )
+                            )
+                    );
         }
 
-        // Add status
-        if (request.getStatus() != null) {
-            String condition = "and i.status = :status";
-            sb.append(condition);
-        }
+        Query qr = session.createQuery(criteriaQuery);
 
-        // Create query
-        TypedQuery<IndexIssueResponse> findAllIssues = session.createQuery(sb.toString(), IndexIssueResponse.class);
-        findAllIssues.setParameter("localityId", request.getLocalityId());
-
-        // Filer by status
-        if (request.getStatus() != null) {
-            findAllIssues.setParameter("status", request.getStatus());
-        }
-
-        // If request has limit, use it
         if (request.getLimit() != null) {
-            findAllIssues.setMaxResults(request.getLimit());
+            qr.setMaxResults(request.getLimit());
             if (request.getPage() != null) {
-                findAllIssues.setFirstResult(calculateOffset(request.getPage(), request.getLimit()));
-                findAllIssues.setMaxResults(request.getLimit());
+                qr.setFirstResult(calculateOffset(request.getPage(), request.getLimit()));
+                qr.setMaxResults(request.getLimit());
             }
 
         }
-        return findAllIssues.getResultList();
+
+        List<IssuesModel> rawResponse = session.createQuery(criteriaQuery).getResultList();
+        List<IndexIssueResponse> response = rawResponse.stream().map(
+                issue -> new IndexIssueResponse(
+                        issue.getId(),
+                        issue.getTitle(),
+                        issue.getDescription(),
+                        issue.getStatus(),
+                        issue.getCreatedAt(),
+                        issue.getImageUrl(),
+                        issue.getUser().getUsername()
+                )
+        ).collect(Collectors.toList());
+
+        return response;
     }
 
     @Override

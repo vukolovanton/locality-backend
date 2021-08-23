@@ -25,6 +25,7 @@ public class AnnouncementsRepository implements IAnnouncements {
     private final EntityManager entityManager;
     private final UserRepository userRepository;
 
+    // I did this КОСТЫЛЬ for fun. Please never touch it.
     @Override
     @Transactional
     public List<IndexAnnouncementsResponse> findAll(IndexAnnouncementsRequest request) {
