@@ -1,5 +1,6 @@
 package com.backend.locality.api.users;
 
+import com.backend.locality.api.role.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,18 +20,20 @@ public class UserDetailsImpl implements UserDetails {
     private final String username;
     private final String firstName;
     private final String lastName;
+    private final Role role;
     private final String email;
     @JsonIgnore
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, Long localityId, String username, String firstName, String lastName, String email, String password,
+    public UserDetailsImpl(Long id, Long localityId, String username, String firstName, String lastName, Role role, String email, String password,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.localityId = localityId;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.role = role;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
@@ -45,6 +48,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getUsername(),
                 user.getFirstName(),
                 user.getLastName(),
+                user.getRole(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities);
@@ -80,6 +84,10 @@ public class UserDetailsImpl implements UserDetails {
     public String getFirstName() { return firstName; }
 
     public String getLastName() {return lastName; }
+
+    public Role getRole() {
+        return role;
+    }
 
     @Override
     public boolean isAccountNonExpired() {

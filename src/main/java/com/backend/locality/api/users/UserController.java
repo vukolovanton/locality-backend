@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserRepository userRepository;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.PATCH)
     public String index(@RequestBody PatchUserRequest request) throws BadHttpRequest {
         try {
             userRepository.updateUserLocalityId(request.getLocalityId(), request.getUserId());

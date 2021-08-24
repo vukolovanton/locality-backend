@@ -43,6 +43,7 @@ public class SignInController {
                             userDetails.getEmail(),
                             userDetails.getFirstName(),
                             userDetails.getLastName(),
+                            userDetails.getRole(),
                             jwt
                         )
                 );
