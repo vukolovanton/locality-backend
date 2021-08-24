@@ -32,4 +32,7 @@ public class LocalityModel extends BaseEntity {
 
     @Column
     private String street;
+
+    @Column
+    private Long ownerId;
 }

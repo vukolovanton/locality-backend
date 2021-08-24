@@ -36,11 +36,6 @@ public class LocalityRepository implements ILocality {
         Query qr = session.createQuery(criteriaQuery);
         List<LocalityModel> result = qr.getResultList();
 
-//        TypedQuery<LocalityModel> findAllQuery = session.createQuery(
-//                "Select l from LocalityModel l",
-//                LocalityModel.class
-//        );
-
         return result;
     }
 
@@ -60,7 +55,9 @@ public class LocalityRepository implements ILocality {
     @Override
     public LocalityModel saveLocality(LocalityCreationDTO locality) {
         Session session = entityManager.unwrap(Session.class);
-        LocalityModel l = new LocalityModel(locality.getTitle(), locality.getDescription(), locality.getCity(), locality.getStreet());
+        LocalityModel l = new LocalityModel(
+                locality.getTitle(), locality.getDescription(), locality.getCity(), locality.getStreet(), locality.getUserId()
+        );
         Long localityId = (Long) session.save(l);
 
         LocalityModel savedLocality = findLocalityById(localityId);
