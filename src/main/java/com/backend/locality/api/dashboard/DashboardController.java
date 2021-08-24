@@ -28,7 +28,7 @@ public class DashboardController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/users")
-    public Long getUsersStats(@ModelAttribute IndexDashboardRequest request) {
+    public HashMap<String, Long> getUsersStats(@ModelAttribute IndexDashboardRequest request) {
         return dashboardService.usersStatistics();
     }
 

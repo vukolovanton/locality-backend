@@ -43,7 +43,7 @@ public class DashboardRepository {
     }
 
     @Transactional
-    public Long usersStatistic() {
+    public HashMap<String, Long> usersStatistic() {
         Session session = entityManager.unwrap(Session.class);
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
@@ -51,9 +51,11 @@ public class DashboardRepository {
         Root<UserModel> usersRoot = criteriaQuery.from(UserModel.class);
         criteriaQuery.select(criteriaBuilder.count(usersRoot));
         Long usersCount = session.createQuery(criteriaQuery).getSingleResult();
-        System.out.println(usersCount);
 
-        return usersCount;
+        HashMap<String, Long> result = new HashMap<>();
+        result.put("TOTAL_USERS", usersCount);
+
+        return result;
     }
 
     @Transactional

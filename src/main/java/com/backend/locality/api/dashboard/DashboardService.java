@@ -18,7 +18,7 @@ public class DashboardService {
         return dashboardRepository.announcementsStatistic();
     }
 
-    public Long usersStatistics() {
+    public HashMap<String, Long> usersStatistics() {
         return dashboardRepository.usersStatistic();
     }
 }
