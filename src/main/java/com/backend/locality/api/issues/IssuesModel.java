@@ -20,7 +20,8 @@ public class IssuesModel extends BaseEntity {
     @Column
     private String title;
 
-    @Column
+    @Lob
+    @Column(length = 512, columnDefinition = "TEXT")
     private String description;
 
     @Column
