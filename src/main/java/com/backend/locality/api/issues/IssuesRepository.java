@@ -42,14 +42,7 @@ public class IssuesRepository implements IIssues {
             criteriaQuery.where(criteriaBuilder.equal(issuesRoot.get("status"), request.getStatus()));
         }
         if (request.getOrderBy() != null) {
-            criteriaQuery
-                    .orderBy(
-                            criteriaBuilder.desc(
-                                    issuesRoot.get(
-                                            request.getOrderBy()
-                                    )
-                            )
-                    );
+            criteriaQuery.orderBy(criteriaBuilder.desc(issuesRoot.get(request.getOrderBy())));
         }
 
         Query qr = session.createQuery(criteriaQuery);
@@ -60,10 +53,9 @@ public class IssuesRepository implements IIssues {
                 qr.setFirstResult(calculateOffset(request.getPage(), request.getLimit()));
                 qr.setMaxResults(request.getLimit());
             }
-
         }
 
-        List<IssuesModel> rawResponse = session.createQuery(criteriaQuery).getResultList();
+        List<IssuesModel> rawResponse = qr.getResultList();
         List<IndexIssueResponse> response = rawResponse.stream().map(
                 issue -> new IndexIssueResponse(
                         issue.getId(),

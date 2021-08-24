@@ -1,6 +1,7 @@
 package com.backend.locality.api.locality;
 
 import com.backend.locality.api.locality.interfaces.ILocality;
+import com.backend.locality.api.locality.interfaces.IndexLocalityRequest;
 import com.backend.locality.api.users.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,8 @@ public class LocalityService implements ILocality {
     private final UserRepository userRepository;
 
     @Override
-    public List<LocalityModel> findAll() {
-        return localityRepository.findAll();
+    public List<LocalityModel> findAll(IndexLocalityRequest request) {
+        return localityRepository.findAll(request);
     }
 
     @Override

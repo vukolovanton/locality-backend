@@ -1,12 +1,18 @@
 package com.backend.locality.api.locality;
 
+import com.backend.locality.api.issues.IssuesModel;
 import com.backend.locality.api.locality.interfaces.ILocality;
+import com.backend.locality.api.locality.interfaces.IndexLocalityRequest;
 import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
@@ -15,14 +21,27 @@ public class LocalityRepository implements ILocality {
     private final EntityManager entityManager;
 
     @Override
-    public List<LocalityModel> findAll() {
+    public List<LocalityModel> findAll(IndexLocalityRequest request) {
         Session session = entityManager.unwrap(Session.class);
-        TypedQuery<LocalityModel> findAllQuery = session.createQuery(
-                "Select l from LocalityModel l",
-                LocalityModel.class
-        );
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<LocalityModel> criteriaQuery = criteriaBuilder.createQuery(LocalityModel.class);
+        Root<LocalityModel> localityRoot = criteriaQuery.from(LocalityModel.class);
 
-        return findAllQuery.getResultList();
+        criteriaQuery.select(localityRoot);
+
+        if (request.getSearchText() != null) {
+            criteriaQuery.where(criteriaBuilder.like(localityRoot.get("title"), "%" + request.getSearchText() + "%"));
+        }
+
+        Query qr = session.createQuery(criteriaQuery);
+        List<LocalityModel> result = qr.getResultList();
+
+//        TypedQuery<LocalityModel> findAllQuery = session.createQuery(
+//                "Select l from LocalityModel l",
+//                LocalityModel.class
+//        );
+
+        return result;
     }
 
     @Override

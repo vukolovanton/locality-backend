@@ -1,5 +1,6 @@
 package com.backend.locality.api.locality;
 
+import com.backend.locality.api.locality.interfaces.IndexLocalityRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +13,8 @@ public class LocalityController {
     private final LocalityService localityService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<LocalityModel> getAllLocalities() {
-        return localityService.findAll();
+    public List<LocalityModel> getAllLocalities(@ModelAttribute IndexLocalityRequest request) {
+        return localityService.findAll(request);
     }
 
     @RequestMapping(method = RequestMethod.POST)
