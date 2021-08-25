@@ -14,10 +14,12 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,16 +36,21 @@ public class IssuesRepository implements IIssues {
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<IssuesModel> criteriaQuery = criteriaBuilder.createQuery(IssuesModel.class);
         Root<IssuesModel> issuesRoot = criteriaQuery.from(IssuesModel.class);
+        List<Predicate> predicates = new ArrayList<>();
 
         criteriaQuery.select(issuesRoot);
-        criteriaQuery.where(criteriaBuilder.equal(issuesRoot.get("localityId"), request.getLocalityId()));
 
+        if (request.getLocalityId() != null) {
+            predicates.add(criteriaBuilder.equal(issuesRoot.get("localityId"),request.getLocalityId()));
+        }
         if (request.getStatus() != null) {
-            criteriaQuery.where(criteriaBuilder.equal(issuesRoot.get("status"), request.getStatus()));
+            predicates.add(criteriaBuilder.equal(issuesRoot.get("status"),request.getStatus()));
         }
         if (request.getOrderBy() != null) {
             criteriaQuery.orderBy(criteriaBuilder.desc(issuesRoot.get(request.getOrderBy())));
         }
+
+        criteriaQuery.where(predicates.toArray(new Predicate[] {}));
 
         Query qr = session.createQuery(criteriaQuery);
 

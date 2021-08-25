@@ -19,17 +19,17 @@ public class DashboardController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/issues")
     public HashMap<String, Long> getIssuesStats(@ModelAttribute IndexDashboardRequest request) {
-        return dashboardService.issuesStatistics();
+        return dashboardService.issuesStatistics(request);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/announcements")
     public HashMap<String, Long> getAnnouncementsStats(@ModelAttribute IndexDashboardRequest request) {
-        return dashboardService.announcementsStatistics();
+        return dashboardService.announcementsStatistics(request);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/users")
     public HashMap<String, Long> getUsersStats(@ModelAttribute IndexDashboardRequest request) {
-        return dashboardService.usersStatistics();
+        return dashboardService.usersStatistics(request);
     }
 
 }
