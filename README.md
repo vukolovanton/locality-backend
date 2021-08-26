@@ -1,6 +1,6 @@
 # Locality (backend service)
 
-#### API for Locality project. Made with Java Spring Boot, uses Mysql as a database.
+#### API for Locality project. Made with Java Spring Boot, uses PostgreSQL as a database.
 
 List of endpoints:
 
