@@ -23,13 +23,13 @@ public class SignUpController {
         if (userRepository.existsByUsername(signupRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new SignUpResponse("Username" + signupRequest.getUsername() + "already exists", null));
+                    .body(new SignUpResponse("Username " + signupRequest.getUsername() + " already exists", null));
         }
 
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new SignUpResponse("Email" + signupRequest.getEmail() + "already exists", null));
+                    .body(new SignUpResponse("Email " + signupRequest.getEmail() + " already exists", null));
         }
 
         UserModel user = new UserModel(
