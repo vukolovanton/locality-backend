@@ -1,9 +1,20 @@
 # Locality (backend service)
-
 #### API for Locality project. Made with Java Spring Boot, uses PostgreSQL as a database.
+Development:
+You can use docker-compose file to automatically configure and run project
+```
+// Get repository
+git clone git@github.com:vukolovanton/locality-backend.git
+cd locality-backend
 
+// Now you can run app with docker (I hope so)
+docker-compose up
+```
+
+But if Murphy's law strikes again, you need to run PostgreSQL, create DB `locality` and configure data in `application.properties` file.
+
+---
 List of endpoints:
-
 ### Auth
 - **Sign Up**: POST `/api/v1/auth/signup`
 ```
